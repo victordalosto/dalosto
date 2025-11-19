@@ -2013,15 +2013,15 @@
         "command": "-glassit.decrease"
     },
     {
-        "key": "shift+enter",
-        "command": "editor.action.previousMatchFindAction"
-    },
-    {
         "key": "ctrl+t",
         "command": "workbench.action.terminal.toggleTerminal"
     },
     {
-        "key": "shift+enter",
-        "command": "editor.action.previousSelectionMatchFindAction"
+        "key": "alt+w",
+        "command": "editor.action.toggleWordWrap"
+    },
+    {
+        "key": "alt+z",
+        "command": "-editor.action.toggleWordWrap"
     }
 ]

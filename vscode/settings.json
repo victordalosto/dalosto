@@ -14,7 +14,7 @@
         "**/.gitattributes": true,
         "**/.git": true,
         "**/.dockerignore": true,
-        "**/.github": true,
+        // "**/.github": true,
         "**/.idea": true,
 
         "**/.mvn": true,
@@ -480,8 +480,8 @@
     //  HOME  ->  "/usr/lib/jvm/java-17-openjdk-amd64/",  "C:\\dev\\jdk-21"
     // "spring-boot.ls.java.home": "D:\\dev\\java",
     "java.trace.server": "verbose",
-    "java.jdt.ls.java.home": "D:\\dev\\java",
-    "kotlin.java.home": "D:\\dev\\java",
+    "java.jdt.ls.java.home": "C:\\dev\\java",
+    "kotlin.java.home": "C:\\dev\\java",
     "kotlin.languageServer.enabled": true,
     "kotlin.scripts.enabled": false,
     "maven.terminal.useJavaHome": true,
@@ -580,12 +580,10 @@
     "editor.autoClosingQuotes": "never",
     "editor.stickyScroll.scrollWithEditor": false,
     "editor.stickyScroll.enabled": false,
-    "editor.glyphMargin": false,
-    "editor.folding": false,
+    // "editor.glyphMargin": false,
+    // "editor.folding": false,
     "editor.hover.hidingDelay": 100,
     "editor.hover.delay": 100,
-    "editor.wordWrap": "wordWrapColumn",
-    "editor.lineNumbers": "relative",
     "editor.wordWrapColumn": 100,
     "editor.cursorSurroundingLines": 8,
 
@@ -639,7 +637,7 @@
 
 
     "diffEditor.codeLens": true,
-    "sonarlint.pathToNodeExecutable": "D:\\dev\\nodejs\\node.exe",
+    "sonarlint.pathToNodeExecutable": "D:\\\\dev\\\\nodejs\\\\node.exe",
     "html.autoCreateQuotes": false,
     "apc.electron": {
         "titleBarStyle": "hiddenInset",
@@ -688,7 +686,7 @@
 
     "workbench.editor.labelFormat": "short",
 
-    "workbench.iconTheme": "bearded-icons",
+    "workbench.iconTheme": "material-icon-theme",
     "workbench.editor.enablePreview": false,
     "workbench.colorTheme": "Dracula Theme",
     "workbench.productIconTheme": "fluent-icons",
@@ -796,7 +794,6 @@
 
 
     "pascal.tags.autoGenerate": false,
-    "window.menuBarVisibility": "compact",
 
 
 
@@ -804,7 +801,10 @@
     "kotlin.codegen.enabled": true,
     "glassit.alpha": 255,
     "breadcrumbs.enabled": false,
-    "workbench.statusBar.visible": false,
+    "debug.onTaskErrors": "debugAnyway",
+    "editor.lineNumbers": "on",
+    "workbench.editorLargeFileConfirmation": 4096,
+    "window.menuBarVisibility": "compact",
 
 
 }
