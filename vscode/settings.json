@@ -2,15 +2,8 @@
 
     // Excluded files
     "files.exclude": {
-        // "docs": true,
-        // "**/.vs": true,
-        // "**/.vscode": true,
-        // "**/.gitignore": true,
-        // "**/Dockerfile": true,
-        // "**/src/test/**": true,
 
         "**/.editorconfig": true,
-
         "**/.gitattributes": true,
         "**/.git": true,
         "**/.dockerignore": true,
@@ -19,12 +12,10 @@
 
         "**/.mvn": true,
         "**/mvnw": true,
-        "**/mvnw.cmd": true,
+        // "**/mvnw.cmd": true,
 
         "**/LICENSE": true,
         "**/HELP.md": true,
-        // "**/Readme.md": true,
-        // "**/README.md": true,
 
         "**/__pytorch__": true,
         "**/__pycache__": true,
@@ -32,10 +23,9 @@
         "**/gradlew": true,
         "**/.gradle": true,
         "**/settings.gradle": true,
-        "**/gradlew.bat": true,
+        // "**/gradlew.bat": true,
         "**/gradle": true,
         "**/build.gradle": true,
-        // "**/pom.xml": true,
 
         "**/build": true,
         "**/bin": true,
@@ -61,13 +51,6 @@
         // "**/Assets_": true,
         // "**/*.inputactions": true,
     },
-
-    // Previous colors
-    // Background: 171412 -> 030D22
-    // classes: FF1BF0 -> FF1BF0
-    // types: 66D9EF -> 00FFFF
-
-    // "workbench.colorTheme": "2077",
 
     "accessibility.dimUnfocused.enabled": true,
     "accessibility.dimUnfocused.opacity": 0.5,
@@ -428,62 +411,11 @@
 
 
 
-    // "highlight.regexes": {
-    //     // using (.*)|namespace (.*)|
-    //     "(.*)(package (.*)|import (.*))(.*)": [
-    //         {},
-    //         {
-    //             "color": "#999996",
-    //             "fontStyle": ""
-    //         }
-    //     ],
-    //     "(.*)(// (.?)+||/** (.?)+)(.*)": [
-    //         {},
-    //         { // comments
-    //             "color": "#6272A4",
-    //             "fontStyle": ""
-    //         }
-    //     ],
-    //     "(.*)(var | string| int | bool | boolean | char | decimal | double| float | long | short | function |variable )(.*)": [
-    //         {},
-    //         {
-    //             "color": "#00FFFF",
-    //             "fontStyle": ""
-    //         }
-    //     ],
-    //     "(.*)( bool )(.*)": [
-    //         {},
-    //         {
-    //             "color": "#00FFFF",
-    //             "fontStyle": ""
-    //         }
-    //     ],
-    //     "(.*)( void |const)(.*)": [
-    //         {},
-    //         {
-    //             "color": "#00FFFF",
-    //             "fontStyle": ""
-    //         }
-    //     ],
-    //     "(.*)( event )(.*)": [
-    //         {},
-    //         {
-    //             "color": "#9a4dff",
-    //             "fontStyle": ""
-    //         }
-    //     ],
-    // },
-
-
-
     // JAVA CONFIGURATIONS
     //  HOME  ->  "/usr/lib/jvm/java-17-openjdk-amd64/",  "C:\\dev\\jdk-21"
-    // "spring-boot.ls.java.home": "D:\\dev\\java",
     "java.trace.server": "verbose",
+    "spring-boot.ls.java.home": "C:\\dev\\java",
     "java.jdt.ls.java.home": "C:\\dev\\java",
-    "kotlin.java.home": "C:\\dev\\java",
-    "kotlin.languageServer.enabled": true,
-    "kotlin.scripts.enabled": false,
     "maven.terminal.useJavaHome": true,
     "java.maven.downloadSources": true,
     "java.eclipse.downloadSources": true,
@@ -579,7 +511,6 @@
     "editor.titleBar.enabled": false,
     "editor.autoClosingQuotes": "never",
     "editor.stickyScroll.scrollWithEditor": false,
-    "editor.stickyScroll.enabled": false,
     // "editor.glyphMargin": false,
     // "editor.folding": false,
     "editor.hover.hidingDelay": 100,
@@ -591,7 +522,6 @@
 
     "update.mode": "manual",
     "terminal.integrated.gpuAcceleration": "on",
-
     "window.zoomLevel": 0,
     "files.trimTrailingWhitespace": true,
     "terminal.integrated.fontSize": 13,
@@ -605,7 +535,6 @@
 
 
     // OTHERS
-    "vsintellicode.modify.editor.suggestSelection": "disabled",
     "explorer.sortOrder": "filesFirst",
 
 
@@ -687,7 +616,6 @@
     "workbench.editor.labelFormat": "short",
 
     "workbench.iconTheme": "material-icon-theme",
-    "workbench.editor.enablePreview": false,
     "workbench.colorTheme": "Dracula Theme",
     "workbench.productIconTheme": "fluent-icons",
     "workbench.tree.indent": 20,
@@ -790,21 +718,15 @@
     "git.autofetch": true,
     "terminal.integrated.detectLocale": "on",
     "outline.showNumbers": false,
-
-
-
-    "pascal.tags.autoGenerate": false,
-
-
-
-
-    "kotlin.codegen.enabled": true,
-    "glassit.alpha": 255,
     "breadcrumbs.enabled": false,
     "debug.onTaskErrors": "debugAnyway",
     "editor.lineNumbers": "on",
     "workbench.editorLargeFileConfirmation": 4096,
-    "window.menuBarVisibility": "compact",
+    "diffEditor.renderSideBySide": false,
+    "claudeCode.preferredLocation": "panel",
+    "claudeCode.selectedModel": "opus",
+    "chat.viewSessions.orientation": "stacked",
+    "claudeCode.respectGitIgnore": false,
 
 
 }

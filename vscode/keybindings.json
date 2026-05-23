@@ -233,20 +233,10 @@
         "command": "workbench.action.files.openFolder",
         "when": "openFolderWorkspaceSupport"
     },
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    {
+        "key": "ctrl+l",
+        "command": "workbench.action.toggleAuxiliaryBar"
+    },
     {
         "key": "f6",
         "command": "-workbench.action.debug.pause",
@@ -1790,7 +1780,7 @@
         "key": "ctrl+shift+c",
         "command": "workbench.action.terminal.sendSequence",
         "args": {
-          "text": "\u0003"
+            "text": "\u0003"
         },
         "when": "terminalFocus"
     },
@@ -1906,13 +1896,11 @@
     },
     {
         "key": "alt+left",
-        "command": "cursorWordPartLeft",
-        "when": "editorTextFocus",
+        "command": "workbench.action.navigateBack"
     },
     {
         "key": "alt+right",
-        "command": "cursorWordPartRight",
-        "when": "editorTextFocus",
+        "command": "workbench.action.navigateForward"
     },
     {
         "key": "shift+alt+left",
@@ -1947,13 +1935,17 @@
     {
         "key": "ctrl+up",
         "command": "extension.multiCommand.execute",
-        "args": { "command": "multiCommand.cursorAndScrollUp5" },
+        "args": {
+            "command": "multiCommand.cursorAndScrollUp5"
+        },
         "when": "editorTextFocus"
     },
     {
         "key": "ctrl+down",
         "command": "extension.multiCommand.execute",
-        "args": { "command": "multiCommand.cursorAndScrollDown5" },
+        "args": {
+            "command": "multiCommand.cursorAndScrollDown5"
+        },
         "when": "editorTextFocus"
     },
     {

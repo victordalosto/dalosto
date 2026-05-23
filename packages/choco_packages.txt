@@ -1,8 +1,0 @@
-cmder
-googlechrome
-git
-corretto17jdk
-python3
-gitkraken
-virtualbox
-vscode

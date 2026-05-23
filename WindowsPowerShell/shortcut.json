@@ -1,0 +1,13 @@
+{
+    "actions": [
+        {
+            "command": { "action": "closeTab" },
+            "id": "User.closeTab.0"
+        }
+    ],
+    "keybindings": [
+        { "id": "Terminal.OpenNewTab",        "keys": "ctrl+t" },
+        { "id": "User.closeTab.0",            "keys": "ctrl+w" },
+        { "id": "Terminal.DuplicatePaneAuto", "keys": "ctrl+k" }
+    ]
+}
