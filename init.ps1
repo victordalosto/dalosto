@@ -1,6 +1,6 @@
-# init.ps1 - bootstrap the whole repo: Keys.exe autostart, VSCode config, PowerShell profile + Terminal shortcuts.
+# init.ps1 — deploy dotfiles from this directory to their system locations.
 # Run from any shell:  powershell -ExecutionPolicy Bypass -File .\init.ps1
-# Flags: -DryRun previews without writing. -Force overwrites without comparing/backing up.
+# Use -DryRun to preview without writing. Use -Force to overwrite without prompting.
 
 [CmdletBinding()]
 param(
@@ -9,32 +9,13 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
-$repoRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
-$psSrcDir = Join-Path $repoRoot 'WindowsPowerShell'
+$here = Split-Path -Parent $MyInvocation.MyCommand.Path
 
-# Target paths
-$profilePath   = Join-Path ([Environment]::GetFolderPath('MyDocuments')) 'WindowsPowerShell\Microsoft.PowerShell_profile.ps1'
-$terminalPath  = Join-Path $env:LOCALAPPDATA 'Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json'
-$startupDir    = [Environment]::GetFolderPath('Startup')
-$vscodeUserDir = Join-Path $env:APPDATA 'Code\User'
-
-$script:Failures = @()
+$profilePath  = Join-Path ([Environment]::GetFolderPath('MyDocuments')) 'WindowsPowerShell\Microsoft.PowerShell_profile.ps1'
+$terminalPath = Join-Path $env:LOCALAPPDATA 'Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json'
 
 function Write-Step($label, $msg, $color = 'Gray') {
     Write-Host ("  {0,-5} {1}" -f $label, $msg) -ForegroundColor $color
-}
-
-function Write-Section($title) {
-    Write-Host "`n[$title]" -ForegroundColor Cyan
-}
-
-function Invoke-Step($stepName, [scriptblock]$body) {
-    try {
-        & $body
-    } catch {
-        $script:Failures += $stepName
-        Write-Step 'FAIL' ("{0}: {1}" -f $stepName, $_.Exception.Message) 'Red'
-    }
 }
 
 function Ensure-Directory($path) {
@@ -52,101 +33,30 @@ function Backup-File($path) {
     if (-not $DryRun) { Copy-Item $path $backup -Force }
 }
 
-# Copy a file with hash-skip and backup-on-overwrite. Returns $true if a write happened (or would in DryRun).
-function Copy-IfChanged($src, $dest, $label) {
-    if (-not (Test-Path $src)) {
-        Write-Step 'SKIP' "${label}: source missing ($src)" 'Yellow'
-        return $false
-    }
-    Ensure-Directory $dest
-    if ((Test-Path $dest) -and -not $Force) {
-        if ((Get-FileHash $src).Hash -eq (Get-FileHash $dest).Hash) {
-            Write-Step 'OK' "$label (already up to date)" 'DarkGreen'
-            return $false
-        }
-        Backup-File $dest
-    }
-    Write-Step 'COPY' "$label -> $dest" 'Green'
-    if (-not $DryRun) { Copy-Item $src $dest -Force }
-    return $true
-}
-
-# --- 1. Keys.exe autostart -------------------------------------------------
-# Drop a Startup-folder shortcut pointing at the in-repo Keys.exe so it launches on login.
-# Shortcut > copy: updates to the source binary take effect with no redeploy, and the user
-# can disable autostart by deleting the .lnk without touching the repo.
-function Install-KeysAutostart {
-    $src = Join-Path $repoRoot 'Keys.exe'
-    if (-not (Test-Path $src)) {
-        Write-Step 'SKIP' "Keys.exe not found at $src" 'Yellow'
-        return
-    }
-    if (-not (Test-Path $startupDir)) {
-        Write-Step 'SKIP' "Startup folder missing ($startupDir)" 'Yellow'
-        return
-    }
-
-    $shortcutPath = Join-Path $startupDir 'Keys.lnk'
-    $workingDir   = Split-Path -Parent $src
-
-    if ((Test-Path $shortcutPath) -and -not $Force) {
-        try {
-            $existing = (New-Object -ComObject WScript.Shell).CreateShortcut($shortcutPath)
-            if ($existing.TargetPath -eq $src -and $existing.WorkingDirectory -eq $workingDir) {
-                Write-Step 'OK' 'Keys.exe autostart (already configured)' 'DarkGreen'
-                return
-            }
-        } catch {
-            # Unreadable shortcut - fall through and recreate.
-        }
-        Backup-File $shortcutPath
-    }
-
-    Write-Step 'LINK' "Keys.exe autostart -> $shortcutPath" 'Green'
-    if (-not $DryRun) {
-        $shell = New-Object -ComObject WScript.Shell
-        try {
-            $shortcut = $shell.CreateShortcut($shortcutPath)
-            $shortcut.TargetPath       = $src
-            $shortcut.WorkingDirectory = $workingDir
-            $shortcut.Description      = 'AutoHotkey hotkeys (Dalosto dotfiles)'
-            $shortcut.WindowStyle      = 7  # minimized
-            $shortcut.Save()
-        } finally {
-            [System.Runtime.InteropServices.Marshal]::ReleaseComObject($shell) | Out-Null
-        }
-    }
-}
-
-# --- 2. VSCode user settings ----------------------------------------------
-# Only deploy when VSCode is installed (its user dir exists). Otherwise skip silently -
-# this script also runs on machines that don't have VSCode.
-function Deploy-VSCodeConfig {
-    $srcDir = Join-Path $repoRoot 'vscode'
-    if (-not (Test-Path $srcDir)) {
-        Write-Step 'SKIP' "VSCode source dir missing ($srcDir)" 'Yellow'
-        return
-    }
-    if (-not (Test-Path $vscodeUserDir)) {
-        Write-Step 'SKIP' "VSCode not installed (no $vscodeUserDir)" 'Yellow'
-        return
-    }
-
-    foreach ($name in @('settings.json', 'keybindings.json')) {
-        Invoke-Step "VSCode/$name" {
-            Copy-IfChanged (Join-Path $srcDir $name) (Join-Path $vscodeUserDir $name) "VSCode $name" | Out-Null
-        }
-    }
-}
-
-# --- 3. PowerShell profile -------------------------------------------------
+# Copy the PowerShell profile verbatim.
 function Deploy-PowerShellProfile {
-    Copy-IfChanged (Join-Path $psSrcDir 'Microsoft.PowerShell_profile.ps1') $profilePath 'PowerShell profile' | Out-Null
+    $src = Join-Path $here 'Microsoft.PowerShell_profile.ps1'
+    if (-not (Test-Path $src)) {
+        Write-Step 'SKIP' "PowerShell profile: source missing ($src)" 'Yellow'
+        return
+    }
+
+    Ensure-Directory $profilePath
+
+    if ((Test-Path $profilePath) -and -not $Force) {
+        if ((Get-FileHash $src).Hash -eq (Get-FileHash $profilePath).Hash) {
+            Write-Step 'OK' 'PowerShell profile (already up to date)' 'DarkGreen'
+            return
+        }
+        Backup-File $profilePath
+    }
+
+    Write-Step 'COPY' "PowerShell profile -> $profilePath" 'Green'
+    if (-not $DryRun) { Copy-Item $src $profilePath -Force }
 }
 
-# --- 4. Windows Terminal shortcuts ----------------------------------------
 # Merge shortcut.json's `actions` and `keybindings` into Windows Terminal's settings.json.
-# Match `actions` by `id`, `keybindings` by `keys` - existing entries with the same key get replaced.
+# Match `actions` by `id`, `keybindings` by `keys` — existing entries with the same key get replaced.
 function Merge-Array($existing, $incoming, $matchProperty) {
     $existing = @($existing)
     foreach ($item in $incoming) {
@@ -158,7 +68,7 @@ function Merge-Array($existing, $incoming, $matchProperty) {
 }
 
 function Deploy-TerminalShortcuts {
-    $src = Join-Path $psSrcDir 'shortcut.json'
+    $src = Join-Path $here 'shortcut.json'
     if (-not (Test-Path $src)) {
         Write-Step 'SKIP' "Terminal shortcuts: source missing ($src)" 'Yellow'
         return
@@ -168,8 +78,8 @@ function Deploy-TerminalShortcuts {
         return
     }
 
-    $shortcut = Get-Content $src          -Raw | ConvertFrom-Json
-    $settings = Get-Content $terminalPath -Raw | ConvertFrom-Json
+    $shortcut = Get-Content $src           -Raw | ConvertFrom-Json
+    $settings = Get-Content $terminalPath  -Raw | ConvertFrom-Json
 
     if ($shortcut.PSObject.Properties['actions']) {
         $merged = Merge-Array $settings.actions $shortcut.actions 'id'
@@ -183,7 +93,8 @@ function Deploy-TerminalShortcuts {
     $newJson = $settings | ConvertTo-Json -Depth 100
 
     if (-not $Force) {
-        # Compare normalized content - both serialized through ConvertTo-Json for fair comparison.
+        $currentJson = Get-Content $terminalPath -Raw
+        # Compare normalized content — both serialized through ConvertTo-Json for fair comparison.
         $currentNormalized = (Get-Content $terminalPath -Raw | ConvertFrom-Json) | ConvertTo-Json -Depth 100
         if ($currentNormalized -eq $newJson) {
             Write-Step 'OK' 'Terminal shortcuts (already merged)' 'DarkGreen'
@@ -199,26 +110,13 @@ function Deploy-TerminalShortcuts {
     }
 }
 
-# --- Main ------------------------------------------------------------------
-if ($DryRun) { Write-Host "DRY RUN - no files will be written.`n" -ForegroundColor Cyan }
-Write-Host "Bootstrapping from: $repoRoot"
+if ($DryRun) { Write-Host "DRY RUN — no files will be written.`n" -ForegroundColor Cyan }
+Write-Host "Deploying dotfiles from: $here`n"
 
-Write-Section 'Keys.exe autostart'
-Invoke-Step 'Keys autostart'      { Install-KeysAutostart }
+Deploy-PowerShellProfile
+Deploy-TerminalShortcuts
 
-Write-Section 'VSCode'
-Invoke-Step 'VSCode config'       { Deploy-VSCodeConfig }
-
-Write-Section 'PowerShell'
-Invoke-Step 'PowerShell profile'  { Deploy-PowerShellProfile }
-Invoke-Step 'Terminal shortcuts'  { Deploy-TerminalShortcuts }
-
-Write-Host ''
-if ($script:Failures.Count -gt 0) {
-    Write-Host ("Done with {0} failure(s): {1}" -f $script:Failures.Count, ($script:Failures -join ', ')) -ForegroundColor Red
-    exit 1
-}
-Write-Host 'Done.' -ForegroundColor Cyan
+Write-Host "`nDone." -ForegroundColor Cyan
 if (-not $DryRun) {
-    Write-Host 'Restart Windows Terminal and reload your PowerShell session to apply changes.'
+    Write-Host "Restart Windows Terminal and reload your PowerShell session to apply changes."
 }

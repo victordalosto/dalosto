@@ -414,8 +414,8 @@
     // JAVA CONFIGURATIONS
     //  HOME  ->  "/usr/lib/jvm/java-17-openjdk-amd64/",  "C:\\dev\\jdk-21"
     "java.trace.server": "verbose",
-    "spring-boot.ls.java.home": "C:\\dev\\java",
-    "java.jdt.ls.java.home": "C:\\dev\\java",
+    "spring-boot.ls.java.home": "C:\\dev\\java-25",
+    "java.jdt.ls.java.home": "C:\\dev\\java-25",
     "maven.terminal.useJavaHome": true,
     "java.maven.downloadSources": true,
     "java.eclipse.downloadSources": true,
@@ -727,6 +727,7 @@
     "claudeCode.selectedModel": "opus",
     "chat.viewSessions.orientation": "stacked",
     "claudeCode.respectGitIgnore": false,
-
+    "python.terminal.activateEnvironment": false,
+    "claudeCode.allowDangerouslySkipPermissions": true,
 
 }

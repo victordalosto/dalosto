@@ -8,10 +8,6 @@ code --install-extension dracula-theme.theme-dracula
 code --install-extension drcika.apc-extension
 code --install-extension eamodio.gitlens
 code --install-extension esbenp.prettier-vscode
-code --install-extension formulahendry.auto-close-tag
-code --install-extension formulahendry.auto-complete-tag
-code --install-extension formulahendry.auto-rename-tag
-code --install-extension github.copilot
 code --install-extension github.copilot-chat
 code --install-extension kreativ-software.csharpextensions
 code --install-extension mark-wiemer.vscode-autohotkey-plus-plus
